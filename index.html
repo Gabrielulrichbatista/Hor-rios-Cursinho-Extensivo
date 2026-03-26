@@ -14,7 +14,6 @@
     --text: #e8e8f0;
     --muted: #7a7a96;
 
-    /* Subject colors */
     --c-quimica:   #f97316;
     --c-matematica:#3b82f6;
     --c-fisica:    #10b981;
@@ -27,8 +26,6 @@
     --c-literatura:#fb7185;
     --c-filosofia: #8b5cf6;
     --c-sociologia:#f43f5e;
-    --c-intervalo: #2a2a38;
-    --c-livre:     #1e1e28;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -59,7 +56,7 @@
   }
   .logo p { color: var(--muted); font-size: 13px; margin-top: 2px; }
 
-  .header-actions { display: flex; gap: 10px; }
+  .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
   .btn {
     padding: 9px 18px;
     border-radius: 10px;
@@ -80,13 +77,185 @@
   }
   .btn.primary:hover { opacity: .88; }
 
+  /* ── WEEK TOGGLE ── */
+  .week-toggle-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .week-toggle-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  .week-switcher {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .week-btn {
+    padding: 8px 22px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .04em;
+  }
+  .week-btn.active-a {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(59,130,246,.35);
+  }
+  .week-btn.active-b {
+    background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 18px rgba(168,85,247,.35);
+  }
+  .week-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .06em;
+  }
+  .week-badge.semana-a {
+    background: rgba(59,130,246,.15);
+    border: 1px solid rgba(59,130,246,.35);
+    color: #93c5fd;
+  }
+  .week-badge.semana-b {
+    background: rgba(168,85,247,.15);
+    border: 1px solid rgba(168,85,247,.35);
+    color: #d8b4fe;
+  }
+  .week-badge .dot {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .semana-a .dot { background: #3b82f6; }
+  .semana-b .dot { background: #a855f7; }
+
+  /* ── STREAK & HOURS ── */
+  .streak-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .streak-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 20px;
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .streak-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .streak-card.fire::before { background: linear-gradient(90deg, #f97316, #f59e0b); }
+  .streak-card.hours::before { background: linear-gradient(90deg, #3b82f6, #6366f1); }
+  .streak-card.weekly::before { background: linear-gradient(90deg, #10b981, #06b6d4); }
+
+  .streak-icon {
+    font-size: 30px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .streak-info {}
+  .streak-num {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .streak-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+    font-weight: 500;
+  }
+  .streak-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── WEEKLY HEATMAP ── */
+  .heatmap-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    margin-top: 8px;
+  }
+  .heat-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .heat-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    transition: all .18s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    position: relative;
+  }
+  .heat-box.attended {
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    border-color: transparent;
+    box-shadow: 0 2px 10px rgba(16,185,129,.3);
+  }
+  .heat-box.today-box {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 2px rgba(245,158,11,.25);
+  }
+  .heat-label {
+    font-size: 9px;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
   /* ── LEGEND ── */
   .legend-wrap {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
     padding: 16px 20px;
-    margin-bottom: 28px;
+    margin-bottom: 20px;
   }
   .legend-title { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
   .legend { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -108,6 +277,19 @@
   .legend-item.hidden { opacity: .35; }
   .legend-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
 
+  /* ── STATS BAR ── */
+  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    flex: 1;
+    min-width: 120px;
+  }
+  .stat-card .stat-num { font-size: 26px; font-weight: 700; line-height: 1; }
+  .stat-card .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
+
   /* ── GRID TABLE ── */
   .table-wrap {
     background: var(--surface);
@@ -115,8 +297,9 @@
     border-radius: 16px;
     overflow: hidden;
     margin-bottom: 28px;
+    overflow-x: auto;
   }
-  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 700px; }
 
   thead th {
     background: var(--surface2);
@@ -128,8 +311,18 @@
     color: var(--muted);
     text-align: center;
     border-bottom: 1px solid var(--border);
+    position: relative;
   }
-  thead th:first-child { text-align: left; padding-left: 18px; width: 100px; }
+  thead th:first-child { text-align: left; padding-left: 18px; width: 90px; }
+  thead th.today-col { color: var(--text); }
+  thead th.today-col::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+  }
+  thead th.weekend-col { color: #a855f7; }
 
   tbody tr { border-bottom: 1px solid var(--border); }
   tbody tr:last-child { border-bottom: none; }
@@ -143,7 +336,6 @@
     vertical-align: middle;
   }
 
-  /* break / lunch rows */
   .break-row td {
     padding: 6px 18px;
     font-size: 11px;
@@ -156,13 +348,13 @@
   }
   .break-row td:first-child { text-align: left; }
 
-  /* slot cell */
   .slot {
     padding: 5px;
     text-align: center;
     vertical-align: middle;
     position: relative;
   }
+  .slot.weekend-slot { background: rgba(168,85,247,.025); }
 
   .aula-card {
     display: flex;
@@ -177,6 +369,7 @@
     min-height: 56px;
     position: relative;
     overflow: hidden;
+    user-select: none;
   }
   .aula-card::before {
     content: '';
@@ -187,6 +380,24 @@
     border-radius: inherit;
   }
   .aula-card:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,0,0,.4); z-index: 2; }
+
+  /* Attended checkmark overlay */
+  .aula-card.attended-card::after {
+    content: '✓';
+    position: absolute;
+    top: 4px; right: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,.9);
+    z-index: 3;
+    background: rgba(16,185,129,.7);
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 16px;
+  }
 
   .aula-card .subject-name {
     font-size: 11px;
@@ -255,6 +466,8 @@
     transform: translateY(12px);
     transition: transform .2s;
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
   }
   .modal-overlay.open .modal { transform: translateY(0); }
 
@@ -303,19 +516,6 @@
   }
   .close-btn:hover { color: var(--text); }
 
-  /* ── STATS BAR ── */
-  .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 28px; }
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 14px 18px;
-    flex: 1;
-    min-width: 120px;
-  }
-  .stat-card .stat-num { font-size: 26px; font-weight: 700; line-height: 1; }
-  .stat-card .stat-label { font-size: 11px; color: var(--muted); margin-top: 4px; font-weight: 500; }
-
   /* ── MANAGE SUBJECTS ── */
   .subjects-panel {
     background: var(--surface);
@@ -324,7 +524,6 @@
     padding: 20px;
     margin-bottom: 28px;
   }
-  .subjects-panel h3 { font-size: 14px; font-weight: 700; margin-bottom: 14px; }
   .subjects-list { display: flex; flex-direction: column; gap: 8px; }
   .subject-row-item {
     display: flex; align-items: center; gap: 10px;
@@ -344,9 +543,7 @@
 
   .add-subject-form { display: flex; gap: 8px; margin-top: 12px; }
   .add-subject-form input { flex: 1; }
-  .add-subject-form input[type=color] {
-    flex: 0; width: 40px; padding: 4px; cursor: pointer;
-  }
+  .add-subject-form input[type=color] { flex: 0; width: 40px; padding: 4px; cursor: pointer; }
 
   /* ── TOAST ── */
   .toast {
@@ -370,12 +567,68 @@
   .section-toggle .arrow { color: var(--muted); transition: transform .2s; font-size: 13px; }
   .section-toggle.collapsed .arrow { transform: rotate(-90deg); }
 
+  /* ── STREAK MODAL ── */
+  .streak-detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 14px;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  .streak-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 9px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 12px;
+  }
+  .streak-detail-item .sdi-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #10b981; flex-shrink: 0;
+  }
+  .streak-detail-item .sdi-dot.missed { background: var(--border); }
+  .streak-detail-item .sdi-date { color: var(--muted); font-size: 11px; min-width: 80px; }
+  .streak-detail-item .sdi-count { margin-left: auto; font-weight: 700; }
+
+  /* Week indicator dot on table header */
+  .week-indicator {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+  .wi-a { background: rgba(59,130,246,.25); color: #93c5fd; }
+  .wi-b { background: rgba(168,85,247,.25); color: #d8b4fe; }
+
+  /* Hours progress bar */
+  .hours-bar {
+    width: 100%;
+    height: 5px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+  .hours-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #3b82f6, #6366f1);
+    transition: width .4s ease;
+  }
+
   @media (max-width: 640px) {
     body { padding: 12px; }
     thead th:first-child { width: 70px; }
     .aula-card .teacher-name, .aula-card .turma-badge { display: none; }
     .aula-card .subject-name { font-size: 9px; }
     .stats { flex-direction: column; }
+    .streak-row { flex-direction: column; }
   }
 </style>
 </head>
@@ -394,6 +647,53 @@
   </div>
 </header>
 
+<!-- WEEK A/B TOGGLE -->
+<div class="week-toggle-wrap">
+  <div>
+    <div class="week-toggle-label">Semana atual</div>
+    <div id="weekBadge" class="week-badge semana-a" style="margin-top:6px;">
+      <div class="dot"></div>
+      <span id="weekBadgeText">Semana A</span>
+    </div>
+  </div>
+  <div class="week-switcher">
+    <button class="week-btn" id="btnSemanaA" onclick="setWeek('A')">Semana A</button>
+    <button class="week-btn" id="btnSemanaB" onclick="setWeek('B')">Semana B</button>
+  </div>
+</div>
+
+<!-- STREAK & HOURS -->
+<div class="streak-row">
+  <div class="streak-card fire" onclick="openStreakModal()">
+    <div class="streak-icon">🔥</div>
+    <div class="streak-info">
+      <div class="streak-num" id="streakNum">0</div>
+      <div class="streak-label">Streak de dias</div>
+      <div class="streak-sub" id="streakSub">Marque aulas como assistidas</div>
+    </div>
+  </div>
+  <div class="streak-card hours">
+    <div class="streak-icon">⏱️</div>
+    <div class="streak-info">
+      <div class="streak-num" id="hoursNum">0h</div>
+      <div class="streak-label">Horas esta semana</div>
+      <div class="streak-sub" id="hoursGoalSub">Meta: 20h/semana</div>
+      <div class="hours-bar"><div class="hours-bar-fill" id="hoursBarFill" style="width:0%"></div></div>
+    </div>
+  </div>
+  <div class="streak-card weekly">
+    <div class="streak-icon">📅</div>
+    <div class="streak-info">
+      <div style="margin-bottom:6px;">
+        <span class="streak-num" id="weeklyAttended" style="font-size:20px;">0</span>
+        <span style="color:var(--muted);font-size:13px;font-weight:500;"> / <span id="weeklyTotal">0</span> aulas</span>
+      </div>
+      <div class="streak-label">Aulas assistidas esta semana</div>
+      <div class="heatmap-row" id="weekHeatmap"></div>
+    </div>
+  </div>
+</div>
+
 <!-- STATS -->
 <div class="stats" id="statsBar"></div>
 
@@ -407,13 +707,15 @@
 <div class="table-wrap">
   <table id="scheduleTable">
     <thead>
-      <tr>
+      <tr id="tableHead">
         <th>Horário</th>
         <th>Segunda</th>
         <th>Terça</th>
         <th>Quarta</th>
         <th>Quinta</th>
         <th>Sexta</th>
+        <th class="weekend-col">Sábado</th>
+        <th class="weekend-col">Domingo</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>
@@ -436,7 +738,7 @@
   </div>
 </div>
 
-<!-- MODAL -->
+<!-- ADD/EDIT MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <button class="close-btn" onclick="closeModal()">✕</button>
@@ -450,6 +752,16 @@
       <div>
         <label>Horário</label>
         <select id="fieldTime"></select>
+      </div>
+    </div>
+    <div class="form-row full">
+      <div>
+        <label>Semana</label>
+        <select id="fieldWeek">
+          <option value="AB">Ambas (A e B)</option>
+          <option value="A">Apenas Semana A</option>
+          <option value="B">Apenas Semana B</option>
+        </select>
       </div>
     </div>
     <div class="form-row full">
@@ -479,12 +791,27 @@
   </div>
 </div>
 
+<!-- STREAK MODAL -->
+<div class="modal-overlay" id="streakOverlay" onclick="if(event.target===event.currentTarget)closeStreakModal()">
+  <div class="modal">
+    <button class="close-btn" onclick="closeStreakModal()">✕</button>
+    <h2>🔥 Histórico de Streak</h2>
+    <p class="modal-sub">Últimos 30 dias de presença</p>
+    <div class="streak-detail-list" id="streakDetailList"></div>
+    <div class="modal-actions">
+      <button class="btn danger" onclick="resetStreak()">Zerar streak</button>
+      <button class="btn primary" onclick="closeStreakModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
-// ── DATA ────────────────────────────────────────────────────────────────
-const DAYS = ['Segunda','Terça','Quarta','Quinta','Sexta'];
-const DAY_KEYS = ['seg','ter','qua','qui','sex'];
+// ── CONSTANTS ────────────────────────────────────────────────────────────
+const DAYS     = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+const DAY_KEYS = ['seg','ter','qua','qui','sex','sab','dom'];
+const SLOT_DURATION_MIN = 50; // approx minutes per class slot
 
 const TIME_SLOTS = [
   { id:'07:30', label:'7:30–8:20',   type:'class' },
@@ -526,8 +853,8 @@ const DEFAULT_SUBJECTS = {
   'Sociologia':  '#f43f5e',
 };
 
-// Raw data from the xlsx
-const RAW = {
+// Semana A = default existing schedule
+const RAW_A = {
   seg: {
     '07:30': { subject:'Química',    teacher:'Vini',     turma:'Q1' },
     '08:20': { subject:'Química',    teacher:'Vini',     turma:'Q1' },
@@ -580,19 +907,164 @@ const RAW = {
     '11:30': { subject:'Química',    teacher:'Xiru',     turma:'Q2' },
     '12:15': { subject:'Química',    teacher:'Xiru',     turma:'Q2' },
   },
+  sab: {},
+  dom: {},
+};
+
+// Semana B = empty by default, user fills it in
+const RAW_B = {
+  seg: {}, ter: {}, qua: {}, qui: {}, sex: {}, sab: {}, dom: {}
 };
 
 // ── STATE ────────────────────────────────────────────────────────────────
-let subjects = JSON.parse(localStorage.getItem('ext_subjects') || 'null') || {...DEFAULT_SUBJECTS};
-let schedule = JSON.parse(localStorage.getItem('ext_schedule') || 'null') || deepCopy(RAW);
-let hidden   = JSON.parse(localStorage.getItem('ext_hidden')   || '[]');
-let editing  = null; // { day, time }
+let subjects  = JSON.parse(localStorage.getItem('ext_subjects')  || 'null') || {...DEFAULT_SUBJECTS};
+let scheduleA = JSON.parse(localStorage.getItem('ext_scheduleA') || 'null') || deepCopy(RAW_A);
+let scheduleB = JSON.parse(localStorage.getItem('ext_scheduleB') || 'null') || deepCopy(RAW_B);
+let hidden    = JSON.parse(localStorage.getItem('ext_hidden')     || '[]');
+let currentWeek = localStorage.getItem('ext_currentWeek') || 'A';
+
+// Streak data: { dateStr: { attended: N, total: N } }  key = YYYY-MM-DD (week start Monday)
+let streakData = JSON.parse(localStorage.getItem('ext_streakData') || '{}');
+// Attended slots this week: Set of "day|slot" keys for current iso week
+let attendedSlots = JSON.parse(localStorage.getItem('ext_attendedSlots') || '{}');
+// attendedSlots structure: { "YYYYWNN": { "seg|07:30": true, ... } }
+
+let editing = null;
 
 function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
+
+function getSchedule(){ return currentWeek === 'A' ? scheduleA : scheduleB; }
+
 function save(){
-  localStorage.setItem('ext_subjects', JSON.stringify(subjects));
-  localStorage.setItem('ext_schedule', JSON.stringify(schedule));
-  localStorage.setItem('ext_hidden',   JSON.stringify(hidden));
+  localStorage.setItem('ext_subjects',   JSON.stringify(subjects));
+  localStorage.setItem('ext_scheduleA',  JSON.stringify(scheduleA));
+  localStorage.setItem('ext_scheduleB',  JSON.stringify(scheduleB));
+  localStorage.setItem('ext_hidden',     JSON.stringify(hidden));
+  localStorage.setItem('ext_currentWeek',currentWeek);
+  localStorage.setItem('ext_streakData', JSON.stringify(streakData));
+  localStorage.setItem('ext_attendedSlots', JSON.stringify(attendedSlots));
+}
+
+// ── WEEK / DATE HELPERS ──────────────────────────────────────────────────
+function getISOWeekKey(date){
+  const d = new Date(date);
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate() + 4 - (d.getDay()||7));
+  const yearStart = new Date(d.getFullYear(),0,1);
+  const weekNo = Math.ceil((((d-yearStart)/86400000)+1)/7);
+  return `${d.getFullYear()}W${String(weekNo).padStart(2,'0')}`;
+}
+
+function getCurrentWeekKey(){ return getISOWeekKey(new Date()); }
+
+function getTodayDayKey(){
+  const day = new Date().getDay(); // 0=Sun,1=Mon,...,6=Sat
+  const map = {1:'seg',2:'ter',3:'qua',4:'qui',5:'sex',6:'sab',0:'dom'};
+  return map[day];
+}
+
+// ── ATTENDED / STREAK ────────────────────────────────────────────────────
+function getWeekAttended(){
+  const wk = getCurrentWeekKey();
+  return attendedSlots[wk] || {};
+}
+
+function isAttended(day, slot){
+  const wk = getCurrentWeekKey();
+  return !!(attendedSlots[wk] && attendedSlots[wk][`${day}|${slot}`]);
+}
+
+function toggleAttended(day, slot){
+  const wk = getCurrentWeekKey();
+  if(!attendedSlots[wk]) attendedSlots[wk] = {};
+  const key = `${day}|${slot}`;
+  if(attendedSlots[wk][key]){
+    delete attendedSlots[wk][key];
+  } else {
+    attendedSlots[wk][key] = true;
+  }
+  updateStreakForToday();
+  save();
+  render();
+}
+
+function updateStreakForToday(){
+  // Record today's date in streakData with how many slots were attended
+  const todayKey = new Date().toISOString().slice(0,10);
+  const wk = getCurrentWeekKey();
+  const attended = Object.keys(attendedSlots[wk] || {}).length;
+  if(attended > 0){
+    if(!streakData[todayKey]) streakData[todayKey] = {};
+    streakData[todayKey].attended = attended;
+  } else {
+    delete streakData[todayKey];
+  }
+}
+
+function computeStreak(){
+  // Count consecutive days going back from today that have attended > 0
+  let streak = 0;
+  const today = new Date();
+  for(let i = 0; i < 365; i++){
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    if(streakData[key] && streakData[key].attended > 0){
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function computeWeeklyHours(){
+  const sched = getSchedule();
+  const wk = getCurrentWeekKey();
+  const attended = attendedSlots[wk] || {};
+  let mins = 0;
+  Object.keys(attended).forEach(k => {
+    // Each attended class slot is approx 50 min
+    mins += SLOT_DURATION_MIN;
+  });
+  return (mins / 60).toFixed(1);
+}
+
+function computeWeeklyTotal(){
+  const sched = getSchedule();
+  let total = 0;
+  DAY_KEYS.forEach(d => {
+    const day = sched[d] || {};
+    Object.keys(day).forEach(t => { if(day[t] && day[t].subject) total++; });
+  });
+  return total;
+}
+
+// ── WEEK TOGGLE ──────────────────────────────────────────────────────────
+function setWeek(w){
+  currentWeek = w;
+  save();
+  renderWeekBadge();
+  render();
+}
+
+function renderWeekBadge(){
+  const badge = document.getElementById('weekBadge');
+  const txt   = document.getElementById('weekBadgeText');
+  const btnA  = document.getElementById('btnSemanaA');
+  const btnB  = document.getElementById('btnSemanaB');
+
+  if(currentWeek === 'A'){
+    badge.className = 'week-badge semana-a';
+    txt.textContent = 'Semana A';
+    btnA.className  = 'week-btn active-a';
+    btnB.className  = 'week-btn';
+  } else {
+    badge.className = 'week-badge semana-b';
+    txt.textContent = 'Semana B';
+    btnA.className  = 'week-btn';
+    btnB.className  = 'week-btn active-b';
+  }
 }
 
 // ── COLOR UTILS ──────────────────────────────────────────────────────────
@@ -610,6 +1082,8 @@ function cardStyle(color){
 
 // ── RENDER ───────────────────────────────────────────────────────────────
 function render(){
+  renderWeekBadge();
+  renderStreak();
   renderStats();
   renderLegend();
   renderTable();
@@ -617,21 +1091,68 @@ function render(){
   save();
 }
 
+function renderStreak(){
+  const streak = computeStreak();
+  const hours  = computeWeeklyHours();
+  const total  = computeWeeklyTotal();
+  const wk     = getCurrentWeekKey();
+  const weekAttended = Object.keys(attendedSlots[wk] || {}).length;
+  const hoursGoal = 20;
+  const hoursRatio = Math.min(parseFloat(hours) / hoursGoal * 100, 100);
+
+  document.getElementById('streakNum').textContent = streak;
+  document.getElementById('streakSub').textContent =
+    streak === 0 ? 'Marque aulas como assistidas' :
+    streak === 1 ? '1 dia consecutivo' :
+    `${streak} dias consecutivos! 🎉`;
+
+  document.getElementById('hoursNum').textContent = `${hours}h`;
+  document.getElementById('hoursGoalSub').textContent = `Meta: ${hoursGoal}h/semana`;
+  document.getElementById('hoursBarFill').style.width = hoursRatio + '%';
+
+  document.getElementById('weeklyAttended').textContent = weekAttended;
+  document.getElementById('weeklyTotal').textContent    = total;
+
+  // Heatmap for current week (Mon–Sun)
+  const heatmap = document.getElementById('weekHeatmap');
+  heatmap.innerHTML = '';
+  const today = new Date();
+  const todayDayKey = getTodayDayKey();
+  const short = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+  DAY_KEYS.forEach((dk, i) => {
+    // Count attended for this day this week
+    const dayAttended = Object.keys(attendedSlots[wk] || {})
+      .filter(k => k.startsWith(dk + '|')).length;
+    const isToday = dk === todayDayKey;
+    const div = document.createElement('div');
+    div.className = 'heat-day';
+    div.innerHTML = `
+      <div class="heat-box ${dayAttended > 0 ? 'attended' : ''} ${isToday ? 'today-box' : ''}"
+           title="${DAYS[i]}: ${dayAttended} aulas assistidas">
+        ${dayAttended > 0 ? '✓' : ''}
+      </div>
+      <div class="heat-label">${short[i]}</div>`;
+    heatmap.appendChild(div);
+  });
+}
+
 function renderStats(){
   const bar = document.getElementById('statsBar');
+  const sched = getSchedule();
   let total = 0, days_with = new Set(), subjects_used = new Set();
   DAY_KEYS.forEach(d => {
-    const day = schedule[d] || {};
+    const day = sched[d] || {};
     Object.keys(day).forEach(t => {
-      if(day[t]){
+      if(day[t] && day[t].subject){
         total++;
         days_with.add(d);
         subjects_used.add(day[t].subject);
       }
     });
   });
+  const weekLabel = currentWeek === 'A' ? 'Semana A' : 'Semana B';
   bar.innerHTML = `
-    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Aulas por semana</div></div>
+    <div class="stat-card"><div class="stat-num">${total}</div><div class="stat-label">Aulas · ${weekLabel}</div></div>
     <div class="stat-card"><div class="stat-num">${days_with.size}</div><div class="stat-label">Dias ativos</div></div>
     <div class="stat-card"><div class="stat-num">${subjects_used.size}</div><div class="stat-label">Matérias ativas</div></div>
     <div class="stat-card"><div class="stat-num">${Object.keys(subjects).length}</div><div class="stat-label">Matérias cadastradas</div></div>
@@ -652,24 +1173,38 @@ function renderLegend(){
 
 function renderTable(){
   const tbody = document.getElementById('tableBody');
+  const sched  = getSchedule();
   tbody.innerHTML = '';
+  const todayDayKey = getTodayDayKey();
+
+  // Update header highlight
+  const headCells = document.querySelectorAll('#tableHead th');
+  headCells.forEach((th, i) => {
+    if(i === 0) return;
+    const dk = DAY_KEYS[i-1];
+    th.classList.toggle('today-col', dk === todayDayKey);
+  });
+
   TIME_SLOTS.forEach(slot => {
     const tr = document.createElement('tr');
     if(slot.type === 'break'){
       tr.className = 'break-row';
-      tr.innerHTML = `<td>${slot.label}</td><td colspan="5">${slot.label2}</td>`;
+      tr.innerHTML = `<td>${slot.label}</td><td colspan="7">${slot.label2}</td>`;
     } else {
       tr.innerHTML = `<td class="time-cell">${slot.label}</td>`;
-      DAY_KEYS.forEach(day => {
+      DAY_KEYS.forEach((day, idx) => {
         const td = document.createElement('td');
-        td.className = 'slot';
-        const entry = (schedule[day] || {})[slot.id];
+        const isWeekend = (day === 'sab' || day === 'dom');
+        td.className = 'slot' + (isWeekend ? ' weekend-slot' : '');
+        const entry = (sched[day] || {})[slot.id];
+        const attended = isAttended(day, slot.id);
         if(entry && entry.subject){
-          const color = subjectColor(entry.subject);
+          const color   = subjectColor(entry.subject);
           const isHidden = hidden.includes(entry.subject);
           td.innerHTML = `
-            <div class="aula-card" style="${cardStyle(color)} ${isHidden ? 'opacity:.2;' : ''}"
-                 onclick="openEditModal('${day}','${slot.id}')">
+            <div class="aula-card ${attended ? 'attended-card' : ''}"
+                 style="${cardStyle(color)} ${isHidden ? 'opacity:.2;' : ''}"
+                 onclick="handleCardClick(event,'${day}','${slot.id}')">
               <div class="subject-name">${entry.subject}</div>
               <div class="teacher-name">${entry.teacher || ''}</div>
               ${entry.turma ? `<div class="turma-badge">${entry.turma}</div>` : ''}
@@ -685,6 +1220,15 @@ function renderTable(){
     }
     tbody.appendChild(tr);
   });
+}
+
+// Click on card: left click = toggle attended, right-click = edit
+function handleCardClick(e, day, slot){
+  if(e.ctrlKey || e.metaKey || e.button === 2){
+    openEditModal(day, slot);
+  } else {
+    toggleAttended(day, slot);
+  }
 }
 
 function renderSubjectsList(){
@@ -706,11 +1250,48 @@ function renderSubjectsList(){
   });
 }
 
-// ── MODAL ────────────────────────────────────────────────────────────────
-function populateModalSelects(day, time){
+// ── STREAK MODAL ─────────────────────────────────────────────────────────
+function openStreakModal(){
+  const list = document.getElementById('streakDetailList');
+  list.innerHTML = '';
+  const today = new Date();
+  for(let i = 0; i < 30; i++){
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().slice(0,10);
+    const data = streakData[key];
+    const attended = data ? data.attended : 0;
+    const el = document.createElement('div');
+    el.className = 'streak-detail-item';
+    const dayNames = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+    const dayName = dayNames[d.getDay()];
+    el.innerHTML = `
+      <div class="sdi-dot ${attended > 0 ? '' : 'missed'}"></div>
+      <div class="sdi-date">${dayName}, ${d.toLocaleDateString('pt-BR',{day:'2-digit',month:'short'})}</div>
+      <div>${attended > 0 ? `${attended} aula${attended>1?'s':''} assistida${attended>1?'s':''}` : '<span style="color:var(--muted)">Sem registro</span>'}</div>
+      <div class="sdi-count">${attended > 0 ? '🔥' : '–'}</div>`;
+    list.appendChild(el);
+  }
+  document.getElementById('streakOverlay').classList.add('open');
+}
+function closeStreakModal(){ document.getElementById('streakOverlay').classList.remove('open'); }
+function resetStreak(){
+  if(!confirm('Zerar todo o histórico de streak?')) return;
+  streakData = {};
+  const wk = getCurrentWeekKey();
+  attendedSlots[wk] = {};
+  save();
+  render();
+  closeStreakModal();
+  toast('Streak zerado.', 'success');
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────
+function populateModalSelects(day, time, weekVal){
   const daySelect  = document.getElementById('fieldDay');
   const timeSelect = document.getElementById('fieldTime');
   const subSelect  = document.getElementById('fieldSubject');
+  const weekSelect = document.getElementById('fieldWeek');
 
   daySelect.innerHTML = DAY_KEYS.map((d,i) =>
     `<option value="${d}" ${d===day?'selected':''}>${DAYS[i]}</option>`).join('');
@@ -721,6 +1302,7 @@ function populateModalSelects(day, time){
   subSelect.innerHTML = Object.keys(subjects).map(n =>
     `<option value="${n}">${n}</option>`).join('');
 
+  weekSelect.value = weekVal || 'AB';
   updateColorPreview();
 }
 
@@ -731,19 +1313,20 @@ function openAddModal(day, time){
   document.getElementById('deleteBtn').style.display = 'none';
   document.getElementById('fieldTeacher').value = '';
   document.getElementById('fieldTurma').value   = '';
-  populateModalSelects(day || DAY_KEYS[0], time || TIME_SLOTS[0].id);
+  populateModalSelects(day || DAY_KEYS[0], time || TIME_SLOTS.find(s=>s.type==='class').id, 'AB');
   document.getElementById('modalOverlay').classList.add('open');
 }
 
 function openEditModal(day, time){
   editing = {day, time};
-  const entry = (schedule[day] || {})[time] || {};
+  const sched = getSchedule();
+  const entry = (sched[day] || {})[time] || {};
   document.getElementById('modalTitle').textContent = 'Editar Aula';
   document.getElementById('modalSub').textContent   = 'Altere os dados do compromisso';
   document.getElementById('deleteBtn').style.display = 'inline-flex';
   document.getElementById('fieldTeacher').value = entry.teacher || '';
   document.getElementById('fieldTurma').value   = entry.turma   || '';
-  populateModalSelects(day, time);
+  populateModalSelects(day, time, entry.week || 'AB');
   if(entry.subject){
     document.getElementById('fieldSubject').value = entry.subject;
     updateColorPreview();
@@ -766,10 +1349,21 @@ function saveSlot(){
   const subject = document.getElementById('fieldSubject').value;
   const teacher = document.getElementById('fieldTeacher').value.trim();
   const turma   = document.getElementById('fieldTurma').value.trim();
+  const week    = document.getElementById('fieldWeek').value;
 
   if(!subject){ toast('Selecione uma matéria.', 'error'); return; }
-  if(!schedule[day]) schedule[day] = {};
-  schedule[day][time] = { subject, teacher, turma };
+
+  const entry = { subject, teacher, turma, week };
+
+  if(week === 'AB' || week === 'A'){
+    if(!scheduleA[day]) scheduleA[day] = {};
+    scheduleA[day][time] = entry;
+  }
+  if(week === 'AB' || week === 'B'){
+    if(!scheduleB[day]) scheduleB[day] = {};
+    scheduleB[day][time] = entry;
+  }
+
   closeModal();
   render();
   toast('Aula salva com sucesso!', 'success');
@@ -778,7 +1372,9 @@ function saveSlot(){
 function deleteSlot(){
   if(!editing) return;
   const {day, time} = editing;
-  if(schedule[day]) delete schedule[day][time];
+  const week = document.getElementById('fieldWeek').value;
+  if(week === 'AB' || week === 'A'){ if(scheduleA[day]) delete scheduleA[day][time]; }
+  if(week === 'AB' || week === 'B'){ if(scheduleB[day]) delete scheduleB[day][time]; }
   closeModal();
   render();
   toast('Aula removida.', 'success');
@@ -799,9 +1395,11 @@ function addSubject(){
 function removeSubject(name){
   if(!confirm(`Remover "${name}"? As aulas desta matéria serão apagadas.`)) return;
   delete subjects[name];
-  DAY_KEYS.forEach(d => {
-    if(schedule[d]) Object.keys(schedule[d]).forEach(t => {
-      if(schedule[d][t] && schedule[d][t].subject === name) delete schedule[d][t];
+  [scheduleA, scheduleB].forEach(sched => {
+    DAY_KEYS.forEach(d => {
+      if(sched[d]) Object.keys(sched[d]).forEach(t => {
+        if(sched[d][t] && sched[d][t].subject === name) delete sched[d][t];
+      });
     });
   });
   render();
@@ -821,7 +1419,7 @@ function toggleHide(name){
 
 // ── IMPORT / EXPORT ──────────────────────────────────────────────────────
 function exportJSON(){
-  const data = { subjects, schedule };
+  const data = { subjects, scheduleA, scheduleB, streakData, attendedSlots };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -837,8 +1435,13 @@ function handleImport(e){
   reader.onload = ev => {
     try {
       const data = JSON.parse(ev.target.result);
-      if(data.subjects) subjects = data.subjects;
-      if(data.schedule) schedule = data.schedule;
+      if(data.subjects)      subjects      = data.subjects;
+      if(data.scheduleA)     scheduleA     = data.scheduleA;
+      if(data.scheduleB)     scheduleB     = data.scheduleB;
+      if(data.streakData)    streakData    = data.streakData;
+      if(data.attendedSlots) attendedSlots = data.attendedSlots;
+      // legacy support
+      if(data.schedule && !data.scheduleA) scheduleA = data.schedule;
       render();
       toast('Horário importado!', 'success');
     } catch { toast('Erro ao importar arquivo.', 'error'); }
@@ -865,6 +1468,20 @@ function toast(msg, type='success'){
 }
 
 // ── INIT ─────────────────────────────────────────────────────────────────
+// Ensure all day keys exist in both schedules
+DAY_KEYS.forEach(dk => {
+  if(!scheduleA[dk]) scheduleA[dk] = {};
+  if(!scheduleB[dk]) scheduleB[dk] = {};
+});
+
+// Add tooltip hint on first load
+if(!localStorage.getItem('ext_hintSeen')){
+  setTimeout(() => {
+    toast('Dica: clique em uma aula para marcar como assistida 🎯', 'success');
+    localStorage.setItem('ext_hintSeen','1');
+  }, 1200);
+}
+
 render();
 </script>
 </body>
