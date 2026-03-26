@@ -1,3 +1,38 @@
+<script type="module">
+// Firebase imports
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
+
+// SUA CONFIG (cola do Firebase)
+  const firebaseConfig = {
+    apiKey: "AIzaSyDxTC1afvS_ewyP-k4TI2te_2_yFj2ozSY",
+    authDomain: "horariocursinho.firebaseapp.com",
+    projectId: "horariocursinho",
+    storageBucket: "horariocursinho.firebasestorage.app",
+    messagingSenderId: "25400398497",
+    appId: "1:25400398497:web:41ef57f481aad8e46816e0",
+    measurementId: "G-FS5KZP8MFV"
+  };
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 🔹 SALVAR TUDO
+async function salvarNuvem(data) {
+  await setDoc(doc(db, "horarios", "usuario1"), data);
+}
+
+// 🔹 CARREGAR TUDO
+async function carregarNuvem() {
+  const docRef = doc(db, "horarios", "usuario1");
+  const snap = await getDoc(docRef);
+  return snap.exists() ? snap.data() : null;
+}
+
+// deixar global
+window.salvarNuvem = salvarNuvem;
+window.carregarNuvem = carregarNuvem;
+</script>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
