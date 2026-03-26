@@ -1,38 +1,3 @@
-<script type="module">
-// Firebase imports
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
-
-// SUA CONFIG (cola do Firebase)
-  const firebaseConfig = {
-    apiKey: "AIzaSyDxTC1afvS_ewyP-k4TI2te_2_yFj2ozSY",
-    authDomain: "horariocursinho.firebaseapp.com",
-    projectId: "horariocursinho",
-    storageBucket: "horariocursinho.firebasestorage.app",
-    messagingSenderId: "25400398497",
-    appId: "1:25400398497:web:41ef57f481aad8e46816e0",
-    measurementId: "G-FS5KZP8MFV"
-  };
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// 🔹 SALVAR TUDO
-async function salvarNuvem(data) {
-  await setDoc(doc(db, "horarios", "usuario1"), data);
-}
-
-// 🔹 CARREGAR TUDO
-async function carregarNuvem() {
-  const docRef = doc(db, "horarios", "usuario1");
-  const snap = await getDoc(docRef);
-  return snap.exists() ? snap.data() : null;
-}
-
-// deixar global
-window.salvarNuvem = salvarNuvem;
-window.carregarNuvem = carregarNuvem;
-</script>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -40,6 +5,94 @@ window.carregarNuvem = carregarNuvem;
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Horário Extensivo</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<!-- ── FIREBASE SDK ── -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+  import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
+
+  // ────────────────────────────────────────────────────────────────
+  // 🔧 SUBSTITUA PELOS SEUS DADOS DO FIREBASE CONSOLE
+  //    (Project Settings → General → Your apps → SDK setup)
+  // ────────────────────────────────────────────────────────────────
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAmCsWuT_esHYzWM6R3icq9ph2P_RUdhpQ",
+    authDomain:        "horariobom.firebaseapp.com",
+    projectId:         "horariobom",
+    storageBucket:     "horariobom.firebasestorage.app",
+    messagingSenderId: "804419224545",
+    appId:             "1:804419224545:web:5bc7a1629504abed1348a0"
+  };
+  // ────────────────────────────────────────────────────────────────
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  let _uid = null;
+  let _unsubscribe = null;
+
+  // ── Salva todos os dados no Firestore ──────────────────────────
+  window.firebaseSave = async function(data) {
+    if (!_uid) return;
+    try {
+      await setDoc(doc(db, "usuarios", _uid, "horario", "dados"), data);
+    } catch(e) {
+      console.error("Firebase save error:", e);
+    }
+  };
+
+  // ── Escuta mudanças em tempo real ──────────────────────────────
+  function subscribeToData(uid) {
+    if (_unsubscribe) _unsubscribe();
+    _unsubscribe = onSnapshot(
+      doc(db, "usuarios", uid, "horario", "dados"),
+      (snap) => {
+        if (snap.exists()) {
+          const d = snap.data();
+          // Só atualiza se veio de outro dispositivo (evita loop)
+          if (window._fbLastSave && Date.now() - window._fbLastSave < 2000) return;
+          if (typeof window.applyFirebaseData === 'function') {
+            window.applyFirebaseData(d);
+          }
+        }
+      },
+      (err) => console.error("Firestore listener error:", err)
+    );
+  }
+
+  // ── Autenticação anônima ────────────────────────────────────────
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      _uid = user.uid;
+      // Guarda o UID no localStorage para reconhecer o mesmo "usuário" depois
+      localStorage.setItem('ext_firebase_uid', _uid);
+      subscribeToData(_uid);
+
+      // Carrega dados iniciais
+      try {
+        const snap = await getDoc(doc(db, "usuarios", _uid, "horario", "dados"));
+        if (snap.exists() && typeof window.applyFirebaseData === 'function') {
+          window.applyFirebaseData(snap.data());
+        } else {
+          // Primeira vez: envia dados do localStorage para o Firebase
+          if (typeof window.getLocalData === 'function') {
+            await setDoc(doc(db, "usuarios", _uid, "horario", "dados"), window.getLocalData());
+          }
+        }
+      } catch(e) {
+        console.error("Firebase load error:", e);
+      }
+
+      document.getElementById('fb-status').textContent = '☁️ Sincronizado';
+      document.getElementById('fb-status').style.color = '#10b981';
+    }
+  });
+
+  // Tenta entrar com o mesmo UID anônimo anterior
+  signInAnonymously(auth).catch(console.error);
+</script>
 <style>
   :root {
     --bg: #0f0f13;
@@ -675,6 +728,7 @@ window.carregarNuvem = carregarNuvem;
     <p>Gerencie suas aulas e compromissos</p>
   </div>
   <div class="header-actions">
+    <span id="fb-status" style="font-size:12px;color:var(--muted);align-self:center;padding:0 4px;">⏳ Conectando…</span>
     <button class="btn" onclick="exportJSON()">⬇ Exportar</button>
     <button class="btn" onclick="importJSON()">⬆ Importar</button>
     <input type="file" id="importFile" accept=".json" style="display:none" onchange="handleImport(event)">
@@ -970,14 +1024,52 @@ function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
 
 function getSchedule(){ return currentWeek === 'A' ? scheduleA : scheduleB; }
 
-function save(){
-  localStorage.setItem('ext_subjects',   JSON.stringify(subjects));
-  localStorage.setItem('ext_scheduleA',  JSON.stringify(scheduleA));
-  localStorage.setItem('ext_scheduleB',  JSON.stringify(scheduleB));
-  localStorage.setItem('ext_hidden',     JSON.stringify(hidden));
-  localStorage.setItem('ext_currentWeek',currentWeek);
-  localStorage.setItem('ext_streakData', JSON.stringify(streakData));
+function getLocalData(){
+  return { subjects, scheduleA, scheduleB, hidden, currentWeek, streakData, attendedSlots };
+}
+
+function applyFirebaseData(d){
+  if(d.subjects)      subjects      = d.subjects;
+  if(d.scheduleA)     scheduleA     = d.scheduleA;
+  if(d.scheduleB)     scheduleB     = d.scheduleB;
+  if(d.hidden)        hidden        = d.hidden;
+  if(d.currentWeek)   currentWeek   = d.currentWeek;
+  if(d.streakData)    streakData    = d.streakData;
+  if(d.attendedSlots) attendedSlots = d.attendedSlots;
+  // Garante que todas as chaves existam
+  DAY_KEYS.forEach(dk => {
+    if(!scheduleA[dk]) scheduleA[dk] = {};
+    if(!scheduleB[dk]) scheduleB[dk] = {};
+  });
+  saveLocal();
+  render();
+}
+// Expõe para o módulo Firebase
+window.applyFirebaseData = applyFirebaseData;
+window.getLocalData      = getLocalData;
+
+function saveLocal(){
+  localStorage.setItem('ext_subjects',      JSON.stringify(subjects));
+  localStorage.setItem('ext_scheduleA',     JSON.stringify(scheduleA));
+  localStorage.setItem('ext_scheduleB',     JSON.stringify(scheduleB));
+  localStorage.setItem('ext_hidden',        JSON.stringify(hidden));
+  localStorage.setItem('ext_currentWeek',   currentWeek);
+  localStorage.setItem('ext_streakData',    JSON.stringify(streakData));
   localStorage.setItem('ext_attendedSlots', JSON.stringify(attendedSlots));
+}
+
+function save(){
+  saveLocal();
+  // Sincroniza com Firebase (debounced para não bater na API a cada tecla)
+  clearTimeout(window._fbSaveTimer);
+  window._fbSaveTimer = setTimeout(() => {
+    window._fbLastSave = Date.now();
+    if(typeof window.firebaseSave === 'function'){
+      window.firebaseSave(getLocalData());
+      const st = document.getElementById('fb-status');
+      if(st){ st.textContent = '☁️ Salvo'; st.style.color = '#10b981'; }
+    }
+  }, 800);
 }
 
 // ── WEEK / DATE HELPERS ──────────────────────────────────────────────────
