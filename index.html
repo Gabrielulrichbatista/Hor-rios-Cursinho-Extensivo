@@ -67,7 +67,9 @@
       doc(db, "usuarios", uid, "horario", "dados"),
       (snap) => {
         if(snap.exists()) {
-          if(window._fbLastSave && Date.now() - window._fbLastSave < 2000) return;
+          // Ignora apenas se acabamos de salvar (menos de 3s), evita loop
+          if(window._fbLastSave && window._fbLastSave > Date.now()) return;
+          console.log("Firebase: atualização recebida em tempo real");
           if(typeof window.applyFirebaseData === 'function')
             window.applyFirebaseData(snap.data());
         }
@@ -99,17 +101,21 @@
 
       subscribeToData(_uid);
 
-      // Carrega dados do Firestore
+      // Carrega dados do Firestore — SEMPRE tem prioridade sobre localStorage
       try {
         const snap = await getDoc(doc(db, "usuarios", _uid, "horario", "dados"));
         if(snap.exists()) {
+          console.log("Firebase: dados encontrados, aplicando...");
           if(typeof window.applyFirebaseData === 'function') {
             window.applyFirebaseData(snap.data());
+            console.log("Firebase: dados aplicados com sucesso!");
           }
         } else {
           // Primeira vez nessa conta: sobe dados locais
+          console.log("Firebase: conta nova, enviando dados locais...");
           if(typeof window.getLocalData === 'function') {
             await setDoc(doc(db, "usuarios", _uid, "horario", "dados"), window.getLocalData());
+            console.log("Firebase: dados locais enviados!");
           }
         }
       } catch(e) { console.error("Firebase load error:", e); }
@@ -1717,6 +1723,10 @@ if(!localStorage.getItem('ext_hintSeen')){
   }, 1200);
 }
 
+// Sinaliza que o app está pronto para receber dados do Firebase
+window._appReady = true;
+
+// Renderiza com dados locais imediatamente, mas o Firebase vai sobrescrever em seguida
 render();
 </script>
 </div><!-- /appContent -->
