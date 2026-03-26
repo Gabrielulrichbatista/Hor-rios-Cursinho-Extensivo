@@ -87,7 +87,7 @@
 
       // Atualiza status e foto
       const st = document.getElementById('fb-status');
-      st.innerHTML = \`<img src="\${user.photoURL}" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:4px;">\${user.displayName?.split(' ')[0] || 'Você'}\`;
+      st.innerHTML = '<img src="' + (user.photoURL||'') + '" style="width:24px;height:24px;border-radius:50%;vertical-align:middle;margin-right:4px;">' + ((user.displayName||'Você').split(' ')[0]);
       st.style.color = '#10b981';
 
       subscribeToData(_uid);
